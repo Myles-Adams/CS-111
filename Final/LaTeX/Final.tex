@@ -10,6 +10,7 @@
 \usepackage{color}
 \usepackage{moreverb}
 \usepackage{wrapfig}
+\usepackage{subfig}
 
 \textwidth 17cm \topmargin -1cm \oddsidemargin 0cm \textheight 21.5cm
 \pagestyle{empty} \pagestyle{fancyplain}
@@ -28,6 +29,30 @@
 \subsection*{Part A}
 \subsection*{Part B}
 \subsection*{Part C}
+
+\begin{figure}[htb]%
+    \centering
+    {\includegraphics[width=8cm]{Problem1_fig1.png}}%
+    \qquad
+    {\includegraphics[width=8cm]{Problem1_fig2.png}}%
+    \label{fig:fig1 and fig2}%
+\end{figure}
+
+\begin{figure}[htb]%
+    \centering
+    {\includegraphics[width=8cm]{Problem1_fig3.png}}%
+    \qquad
+    {\includegraphics[width=8cm]{Problem1_fig4.png}}%
+    \label{fig:fig3 and fig4}%
+    \caption*{Temperature ($^{\circ}$C) throughout the potato at various times}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=1\textwidth]{Problem1_fig5.png}
+\caption*{Temperature ($^{\circ}$C) at the center of potato vs time}
+\label{fig::fig5}
+\end{figure}
 
 \section*{Problem 2}\label{sec::Problem2}
 \subsection*{Part A}
