@@ -1,0 +1,192 @@
+\documentclass[12pt]{article}
+
+\usepackage{fancyhdr}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{esint}
+\usepackage{subfigure}
+\usepackage{color}
+\usepackage{moreverb}
+\usepackage{wrapfig}
+
+\textwidth 17cm \topmargin -1cm \oddsidemargin 0cm \textheight 21.5cm
+\pagestyle{empty} \pagestyle{fancyplain}
+\lhead[\fancyplain{}{}]{\fancyplain{}{{\sc Adam Farnsworth, Myles Adams:}}}
+\chead[\fancyplain{}{}]{\fancyplain{}{{\sc Hw 1}}}
+\rhead[\fancyplain{}{}]{\fancyplain{}{{\sc Fall 2017}}}
+
+\newcommand{\etal}{\textit{et al. }}
+
+\begin{document}
+\centerline{\Large\textbf{Question 1}}
+\vspace{2cm}
+
+\section{Introduction}\label{sec::Intro}
+The goal of this project is to implement three different numerical methods for solving a general ODE and study their accuracy.  These numerical methods are as follows:
+\begin{itemize}
+\item The Euler method: $y_{n+1}= y_n + \Delta t \cdot f(t_n,y_n)$
+\item The explicit trapezoidal method (RK2): $y_{n+1}=y_n+\Delta t \cdot \frac{1}{2}\cdot (f(t_n,y_n))+f(t_{n+1},y_{n+1}))$
+\item The classical Runge-Kutta method (RK4): $y_{n+1}= y_n+\Delta t (\frac{k_1+2k_2+2k_3+k_4}{6})$
+\end{itemize}
+We will use these to study a falling object under the force of gravity and drag force.  This will be seen by comparing the numerical solution and the exact solution graphically.  
+
+\section{Equations and values}\label{sec::equations and values}
+All three methods will use the ODE bellow:
+ \begin{eqnarray}
+\left\{\begin{matrix}
+\frac{dy}{dt} = f(t, y)\\
+y(t_0) = y_0
+\end{matrix}\right.
+       \end{eqnarray}
+
+where $y = y(t)$ is the unknown solution we seek to approximate, $f = f(t, y)$ is a given function,
+$t_0$ is the given initial time and $y_0$ the given initial condition.  In order to check the accuracy, we consider the following system describing a falling object under the force of gravity and drag force:
+
+ \begin{eqnarray}
+\frac{dv}{dt}  &=& g -\frac{c_d}{m}v^2 \\\nonumber
+v(0) &=& 0  \\\nonumber
+       \end{eqnarray}
+where $g \approx 9.81\frac{m}{s^2}$ is the free-fall acceleration, $m = 75 kg$ is the mass of the object and
+$c_d = 0.25 \frac{kg}{m}$ is the drag coefficient. In this case $f(t, v) = g −\frac{c_d}{m}v^2$ and the exact solution is:
+
+\begin{equation}
+v(t)=\sqrt{\frac{gm}{c_d}}tanh(t\sqrt{\frac{gc_d}{m}})\nonumber
+\end{equation}
+and we will take $t_f = 15s$ and a time step of $\Delta t = 0.1s, 0.05s, 0.025s, 0.0125s, 3.3s.$
+
+\section{Numerical and exact solutions  }\label{sec::Euler, RK2, RK4}
+
+
+\subsection{Graph}\label{sec::Solutions}
+The Euler (blue circle), Trapezoidal (red circle), RK4 (yellow/orange circle) and Exact (purple line) solutions are represented below for the time-step dt = 3.3s:
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1\textwidth]{Graph2}
+\end{center}
+\caption{Euler/RK2/RK4/Exact} \label{fig::MyFigure}
+\end{figure}
+
+As we begin using higher order methods, we see less differnce between the exact solution and the numerical soluion.  The Euler method has a large error, where as RK4 has virtually no error.
+\subsection{Tables}
+The following tables show the max error and order for Euler, Trapezoidal, and RK4 for the time steps $\Delta t = 0.1s, 0.05s, 0.025s, 0.0125s$
+
+\begin{table}[bht]
+\begin{center}
+\begin{tabular}{|l|c|r|c|c|}
+\hline
+Time-Step& Max Error & Order \\ \hline
+0.1& 0.181522& 1.004313 \\ \hline
+0.05& 0.0904899& 1.002141 \\ \hline
+0.025& 0.0451779& 1.001066 \\ \hline
+0.0125& 0.0225722& 1.000532 \\ \hline
+
+\end{tabular}
+\end{center}
+\caption{Euler}
+\end{table}
+
+\begin{table}[bht]
+\begin{center}
+\begin{tabular}{|l|c|r|c|c|}
+\hline
+Time-Step& Max Error & Order \\ \hline
+0.1& 0.00217233& 2.013392 \\ \hline
+0.05& 0.000538064& 2.006675 \\ \hline
+0.025& 0.000133895& 2.003349 \\ \hline
+0.0125& $3.33961\cdot10^{-5}$& 2.001673 \\ \hline
+
+\end{tabular}
+\end{center}
+\caption{Trapezoidal}
+\end{table}
+
+\begin{table}[bht]
+\begin{center}
+\begin{tabular}{|l|c|r|c|c|}
+\hline
+Method& Max Error & Order \\ \hline
+0.1& $8.63907\cdot10^{-8}$& 4.013019 \\ \hline
+0.05& $5.35091\cdot10^{-9}$& 4.006024 \\ \hline
+0.025& $3.33038\cdot10^{-10}$& 3.988442\\ \hline
+0.0125& $2.09823\cdot10^{-11}$& 4.197049\\ \hline
+\end{tabular}
+\end{center}
+\caption{RK4} \label{tab::A_Table}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%
+\newpage
+\clearpage
+\centerline{\Large\textbf{Question 2}}
+\section{Order of accuracy via Taylor’s analysis}
+Considering the ODE bellow:
+ \begin{eqnarray}
+\frac{dy}{dt} &= &f(t, y) \\\nonumber
+y(t_0) &=& y_0
+       \end{eqnarray}
+Where $y = y(t)$ is the unknown solution we seek to approximate and $f = f(t, y)$ is a given
+function we used a Taylor’s analysis to find the order of accuracy of the following scheme:
+\begin{equation}
+y_{n+1} = y_{n-1} + 2 \Delta t f(t_n,y_n)\nonumber
+\end{equation}
+The local truncation error is defined as
+\begin{equation}
+E_{tr}= \frac{y(t_{n+1})-y(t_{n-1})}{ 2 \Delta t} - f(t_n,y_n)
+\end{equation}
+The Taylor expansion of $y(t_{n+1})$ around point $t_n$ can be approximated by
+\begin{equation}
+y(t_{n+1})=y(t_{n})+y'(t_{n})\Delta t  + \frac{1}{2}y''(t_{n})\Delta t^2 +  \frac{1}{6}y'''(t_{n})\Delta t^3 +O((\Delta t)^4)\nonumber
+\end{equation}
+And the Taylor expansion of $y(t_{n-1})$ around point $t_n$ can be approximated by
+\begin{equation}
+y(t_{n-1})=y(t_{n})-y'(t_{n})\Delta t  + \frac{1}{2}y''(t_{n})\Delta t^2 -  \frac{1}{6}y'''(t_{n})\Delta t^3 +O((\Delta t)^4\nonumber
+\end{equation}
+We now take $y(t_{n+1})$ and $y(t_{n-1})$ and plug it back into equation (1) to get
+$$
+E_{tr}=\frac{ \begin{array}{rl}
+y(t_{n})+y'(t_{n})\Delta t  + \frac{1}{2}y''(t_{n})\Delta t^2 +  \frac{1}{6}y'''(t_{n})\Delta t^3 +O((\Delta t)^4)  \\
+- (y(t_{n})-y'(t_{n})\Delta t  + \frac{1}{2}y''(t_{n})\Delta t^2 -  \frac{1}{6}y'''(t_{n})\Delta t^3 +O((\Delta t)^4))
+       \end{array} }{2\Delta t} - f(t_n,y_n)
+$$
+Canceling out $\Delta t$, like terms, and 2 from combind terms we are left with
+\begin{equation}
+E_{tr}= \frac{1}{6}y'''(t_{n})\Delta t^2 +y(t_{n})- f(t_n,y_n) \nonumber
+\end{equation}
+The $y_{n}- f(t_n,y_n)$  = 0 (ODE) and are now left with
+\begin{equation}
+E_{tr}= \frac{1}{6}y'''(t_{n})\Delta t^2
+\end{equation}
+The leading term (and only term), which has the lowest power of $\Delta t$, is 
+$\frac{1}{6}y'''(t_{n})\Delta t^2$, therefore
+\begin{equation}E_{tr}= O((\Delta t)^2)\end{equation}
+which shows that the equation has 2nd order of accuracy.
+
+%%%%%%%%%%%
+
+
+%%%%%%%%%%%
+\newpage
+\clearpage
+\setcounter{page}{1} \pagestyle{empty}
+\section{References}\label{sec::References}
+\begin{itemize}
+\item [1] Daniil Bochkov, CS 111 - Introduction to Computational Science Homework 1 Fall 2017
+\item [2] Daniil Bochkov, CS 111 - Introduction to Computational Science Lecture 3 Accuracy Fall 2017
+
+\end{itemize}
+
+
+%%%%%%%%%%%
+
+\end{document}

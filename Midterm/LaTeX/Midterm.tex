@@ -1,0 +1,292 @@
+\documentclass[12pt]{article}
+\usepackage{fancyhdr}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{esint}
+\usepackage{subfigure}
+\usepackage{color}
+\usepackage{moreverb}
+\usepackage{wrapfig}
+\usepackage{indentfirst}
+\usepackage{mathtools}
+\usepackage[section]{placeins}
+
+\textwidth 17cm \topmargin -1cm \oddsidemargin 0cm \textheight 21.5cm
+\pagestyle{empty} \pagestyle{fancyplain}
+\lhead[\fancyplain{}{}]{\fancyplain{}{{\sc Myles Adams}}}
+\chead[\fancyplain{}{}]{\fancyplain{}{{\sc Midterm}}}
+\rhead[\fancyplain{}{}]{\fancyplain{}{{\sc Fall 2017}}}
+
+\newcommand{\etal}{\textit{et al. }}
+
+\begin{document}
+\centerline{\Large\textbf{Midterm}}
+\vspace{.5cm}
+
+\section*{Introduction}\label{sec::Intro}
+The goal of this project is to study the motion of a spinning soccer ball in motion as someone takes a free kick. The ball is kicked with a certain amount of spin about each axis allowing the player to kick it with a certain trajectory to both avoid the wall and score the goal. The spin of the ball is very important because it allows the player to more easily avoid the wall and deceive the goalkeeper defending the goal.
+
+To setup this problem, we will treat the field as a 3-Dimensional plane. The x-direction will be along the width of the field, the y-direction along the length, and the z-direction will be vertical. We will then place the origin at the center of the goal. From there we will place the ball on the field at the initial location $(x_{0}, y_{0}, z_{0})$. The player will then kick the ball giving it an initial velocity of $(v_{x}^{0}, v_{y}^{0}, v_{z}^{0})$. Once the ball has begun moving, there are now three forces that influence the trajectory of the ball. These are the gravitational force, the drag force due to air resistance, and the lift force due to the Magnus Effect. According to Newton's second law, from this situation we obtain the following formula
+\begin{equation}
+m\vec{a} = m\vec{g} - c_{drag}|v|\vec{v} + c_{lift}|v|\vec{s}\times \vec{v}
+\end{equation}
+where $\vec{a} = \begin{pmatrix}a_{x}\\a_{y}\\a_{z}\end{pmatrix} \vec{v} = \begin{pmatrix}v_{x}\\v_{y}\\v_{z}\end{pmatrix} \vec{s} = \begin{pmatrix}s_{x}\\s_{y}\\s_{z}\end{pmatrix}$ are the vectors for acceleration, velocity, and spin in 3-Dimensional space. In order to solve these equations we will need the constants: $m = .437$ kg is the mass of the ball, $g \approx 9.81\frac{m}{s^2}$ is the free-fall acceleration, $c_{drag} = .0057$ is the drag coefficient, and $c_{lift} = .0061$ is the lift (Magnus Effect) coefficient.
+
+In order to make the problem clearer, we will now break this equation down into a system of second-order ODEs:
+
+\begin{equation}
+\begin{dcases}
+m\frac{d^{2}x}{dt^{2}} = -c_{drag}|v|v_{x} + c_{lift}|v|(s_{y}v_{z} - s_{z}v_{y})\\ 
+m\frac{d^{2}y}{dt^{2}} = -c_{drag}|v|v_{y} + c_{lift}|v|(s_{z}v_{x} - s_{x}v_{z})\\
+m\frac{d^{2}z}{dt^{2}} = -mg -c_{drag}|v|v_{z} + c_{lift}|v|(s_{x}v_{y} - s_{y}v_{x})
+\end{dcases}
+\end{equation}
+where $|v| = \sqrt{v_{x}^{2} + v_{y}^{2} + v_{z}^{2}}$ and $v_{x} = \frac{dx}{dt}, v_{y} = \frac{dy}{dt}, v_{z} = \frac{dz}{dt}$.
+
+The starting position and velocity of the ball constitute initial conditions for the system above:
+
+\begin{equation}
+\begin{dcases}
+x(0) = x^{0}, \hspace{.7cm}y(0) = y^{0}, \hspace{.7cm}z(0) = z^{0}\\
+\frac{dx}{dt}(0) = v_{x}^{0}, \hspace{.35cm}\frac{dy}{dt}(0) = v_{y}^{0}, \hspace{.42cm}\frac{dz}{dt}(0) = v_{z}^{0}
+\end{dcases}
+\end{equation}
+
+
+\section*{Part 1}\label{sec::Part 1}
+\noindent Task: Write the system of equations (2) as a system of first-order ODEs.\\
+
+Given what we know about velocity and position and their relationship we can rewrite our system of second-order ODEs as a system of first-order ODEs. We know that $v_{x} = \frac{dx}{dt}, v_{y} = \frac{dy}{dt}, v_{z} = \frac{dz}{dt}$. So using that the system of equations becomes:
+
+\begin{equation}
+\begin{dcases}
+\frac{dx}{dt} = v_{x}\\
+\frac{dy}{dt} = v_{y}\\
+\frac{dz}{dt} = v_{z}\\
+\frac{dv_{x}}{dt} = \frac{-c_{drag}|v|v_{x} + c_{lift}|v|(s_{y}v_{z} - s_{z}v_{y})}{m}\\ 
+\frac{dv_{y}}{dt} = \frac{-c_{drag}|v|v_{y} + c_{lift}|v|(s_{z}v_{x} - s_{x}v_{z})}{m}\\ 
+\frac{dv_{z}}{dt} = \frac{-mg -c_{drag}|v|v_{z} + c_{lift}|v|(s_{x}v_{y} - s_{y}v_{x})}{m}
+\end{dcases}
+\end{equation}
+
+And the initial conditions for that system of equations becomes:
+
+\begin{equation}
+\begin{dcases}
+x(0) = x^{0}, \hspace{.7cm}y(0) = y^{0}, \hspace{.7cm}z(0) = z^{0}\\
+v_{x}(0) = v_{x}^{0}, \hspace{.52cm}v_{y}(0) = v_{y}^{0}, \hspace{.55cm}v_{z}(0) = v_{z}^{0}
+\end{dcases}
+\end{equation}
+
+And so we have completed the task of rewriting the system of equations (2) as a system of first-order ODEs.
+\newpage
+\section*{Part 2}\label{sec::Part 2}
+\noindent Task: Write a MATLAB function for solving a general system of first-order ODEs of size m using the fourth-order Runge-Kutta Method (RK4). The function should take in as input parameters a vector-valued function $\vec{f} = \begin{pmatrix}f^{(1)}\\...\\f^{(m)}\end{pmatrix}$, a vector of initial conditions $\vec{y_{0}} = \begin{pmatrix}y_{0}^{(1)}\\...\\y_{0}^{(m)}\end{pmatrix}$, initial and final times $t_{start}$, and $t_{final}$ and time-step $\Delta t$. The output of the function should be an array $\textbf{t}$ containing all instants of time $t_{0} = t_{start}, t_{1} = t_{0} + \Delta t, . . ., t_{n_{total}} = t_{final}$ and a matrix $\textbf{y}$ of size $m\times n_{total}$ containing numerical solutions at corresponding instants of time as columns.\\
+\indent The function is of the form:\\
+function [t,y] = name\_of\_your\_function(f, y0, t\_start, t\_final, dt)\\
+...\\
+end\\
+
+\noindent The following steps were taken in the function to find the solution.\\
+
+\noindent1) Find the size that the arrays y and t will be and preallocate them.\\
+2) Put initial values into these preallocated arrays.\\
+3) Loop through for all times $t_{start}$ to $t_{final}$ using the value dt. In this loop I will calculate the next values of y using the RK4 Method and the next value of t using dt. These values are then put into the return arrays y and t.\\
+
+\noindent We can write our system of m first-order differential equations as:
+\begin{equation}
+\begin{dcases}
+\frac{dy^{(1)}}{dt} = f^{(1)}(t, y^{(1)}, ..., y^{(m)})\\
+...\\
+\frac{dy^{(m)}}{dt} = f^{(m)}(t, y^{(1)}, ..., y^{(m)})
+\end{dcases}
+\end{equation}
+and the initial conditions as:
+\begin{equation}
+\begin{dcases}
+y^{(1)}(t_{0}) = y_{0}^{(1)}\\
+...\\
+y^{(m)}(t_{0}) = y_{0}^{(1=m)}
+\end{dcases}
+\end{equation}
+where $\vec{y}= \begin{pmatrix} y^{(1)}(t) \\ \vdots \\ y^{(m)}(t) \end{pmatrix}$ are the solutions.\\
+$\vec{f}= \begin{pmatrix} f^{(1)}(t, y^{(1)}, ..., y^{(m)}) \\ \vdots \\ f^{(m)}(t, y^{(1)}, ..., y^{(m)})  \end{pmatrix}$ are the given functions that take in m+1 variables.\\
+$\vec{y_{0}}= \begin{pmatrix} y_{0}^{(1)} \\ \vdots \\ y_{0}^{(m)}  \end{pmatrix}$ are the initial values of the solution given to the functions.
+
+We use these vectors in the Runge-Kutta Method (RK4), which is used to solve systems of ODE's. This method of solving is fourth-order accurate. It is as follows:
+\begin{equation}
+\vec{y_{n+1}} = \vec{y_{n}} + \Delta t\left(\frac{\vec{K_{1} }+ 2\vec{K_{2}} + 2\vec{K_{3}} + \vec{K_{4}}}{6})\right)
+\end{equation}
+
+\noindent We use the following equations to solve for the slopes $\vec{K_{1}}, \vec{K_{2}}, \vec{K_{3}},$ and $\vec{K_{4}}$.
+\begin{eqnarray}
+\vec{K_{1}} = \vec{f}(t_{n}, \vec{y_{n}})\hspace{3.14cm}\\\nonumber
+\vec{K_{2}} = \vec{f}(t_{n} + .5\Delta t, \vec{y_{n}} + .5\Delta t\vec{K_{1}})\\\nonumber
+\vec{K_{3}} = \vec{f}(t_{n} + .5\Delta t, \vec{y_{n}} + .5\Delta t\vec{K_{2}})\\\nonumber
+\vec{K_{4}} = \vec{f}(t_{n} + \Delta t, \vec{y_{n}} + \Delta t\vec{K_{3}})\hspace{.64cm}\nonumber
+\end{eqnarray}
+
+\newpage
+\section*{Part 3}\label{sec::Part 3}
+\noindent Task: Test your MATLAB function using the system of equations
+\begin{equation*}
+\begin{dcases}
+\frac{dy^{(1)}}{dt} = y^{(2)}\\
+\frac{dy^{(2)}}{dt} = sin(1 - exp(y^{(3)})\\
+\frac{dy^{(3)}}{dt} = \frac{1}{1 - ln(y^{(5)} - 1)}\\
+\frac{dy^{(4)}}{dt} = \left(\frac{1}{2}t^{2} + t\right)y^{(2)} + exp(y^{(3)})y{(1)}\\
+\frac{dy^{(5)}}{dt} = 1 - y^{(5)}\\
+\frac{dy^{(6)}}{dt} = -3\left(\frac{exp(y^{(3)}) - 1}{1 + t^{3}}\right)^{2}
+\end{dcases}
+\end{equation*}
+with the initial conditions\\
+\indent\indent$y^{(1)}(0) = 0, \hspace{.4cm}y^{(2)}(0) = 1, \hspace{.4cm}y^{(3)}(0) = 0, \hspace{.4cm}y^{(4)}(0) = 0, \hspace{.4cm}y^{(5)}(0) = 2, \hspace{.4cm}y^{(6)}(0) = 1$\\
+The exact solution to this test problem is\\
+\begin{equation*}
+\begin{dcases}
+y_{exact}^{(1)}(t) = sin(t)\\
+y_{exact}^{(1)}(t) = cos(t)\\
+y_{exact}^{(1)}(t) = ln(1+t)\\
+y_{exact}^{(1)}(t) = \left(\frac{1}{2}t^{2} + t\right)sin(t)\\
+y_{exact}^{(1)}(t) = 1 + exp(-t)\\
+y_{exact}^{(1)}(t) = \frac{1}{1 + t^{3}}
+\end{dcases}
+\end{equation*}
+Take $t_{start} = 0, t_{final} = 1$. Compute the order of accuracy using time-steps $\Delta t$ = 0.1, 0.05, 0.025, 0.0125 and 0.00625 and make sure that your ODE solver produces the expected order of accuracy. Use the following formula to calculate the error of a numerical solution\\
+\begin{equation*}
+E = max\left(\sqrt{(y_{exact}^{(1)}(t_{n}) - y_{n}^{(1)})^{2} + ... + (y_{exact}^{(6)}(t_{n}) - y_{n}^{(6)})^{2}}\right)\hspace{.3cm}for \hspace{.1cm}1\leq n \leq n_{total}
+\end{equation*}
+
+\begin{table}[]
+\centering
+\label{my-label}
+\begin{tabular}{| l | c | r | }
+\hline
+$\Delta t$ & Max-Error   & Order of Accuracy \\ \hline
+.01       & 5.55667e-06 & 4.046657297219    \\ \hline
+.05       & 3.36240e-07 & 4.023664714592    \\ \hline
+.025      & 2.06731e-08 & 4.011691756693    \\ \hline
+.0125     & 1.28164e-09 & 4.005932267986    \\ \hline
+.00625    & 7.97738e-11 & 4.004899168490    \\ \hline
+\end{tabular}
+\caption{Errors and Orders of Accuracy}
+\end{table}
+\newpage
+\clearpage
+\section*{Part 4}\label{sec::Part 4}
+\noindent Task: Use your function to solve the system of equations describing the motion of a spinning ball and obtain trajectories of the ball for each of the cases presented in Table 1 (in all cases $c_{drag} = 0.0057, c_{lift} = 0.0061, h_{wall} = 2$). Take $t_{start} = 0, t_{final} = 2$ and $\Delta t$ = 0.02.\\
+
+\begin{table}[htb]
+\centering
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+         & \multicolumn{3}{l|}{Location} & \multicolumn{3}{l|}{Velocity}           & \multicolumn{3}{l|}{Spin}   & \multicolumn{4}{l|}{Wall}                                                     \\ \hline
+case no. & $x^{0}$  & $y^{0}$  & $z^{0}$ & $v_{x}^{0}$ & $v_{y}^{0}$ & $v_{z}^{0}$ & $s_{x}$ & $s_{y}$ & $s_{z}$ & $x_{start}^{wall}$ & $y_{start}^{wall}$ & $x_{end}^{wall}$ & $y_{end}^{wall}$ \\ \hline
+1        & -15      & 23       & 0       & 18          & -23         & 8.5         & 0.10    & 0.10    & -0.99   & -11.2              & 14.7               & -8.6             & 16.0             \\ \hline
+2        & 25.5     & 15       & 0       & -28         & -11         & 7.5         & 0       & 0       & 1       & 18.1               & 9.7                & 17               & 11.3             \\ \hline
+3        & -4       & 35       & 0       & -8          & -36         & 5           & -0.32   & 0       & 0.95    & -4.3               & 25.9               & -0.8             & 25.9             \\ \hline
+4        & 16       & 28       & 0       & -25         & -20         & 8           & 0.10    & 0.15    & 0.98    & 12.6               & 19.6               & 9.9              & 20.8             \\ \hline
+\end{tabular}
+\caption{Initial values and constants}
+\end{table}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.75\textwidth]{case1.jpg}
+\caption{Case 1}
+\label{fig::MyFigure}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.75\textwidth]{case2.jpg}
+\caption{Case 2}
+\label{fig::MyFigure}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.75\textwidth]{case3.jpg}
+\caption{Case 3}
+\label{fig::MyFigure}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.75\textwidth]{case4.jpg}
+\caption{Case 4}
+\label{fig::MyFigure}
+\end{figure}
+
+\newpage
+\section*{Part 5}\label{sec::Part 5}
+\noindent Task: Write a code that analyzes the trajectories of the ball and determines whether the ball hits the defensive wall and whether the ball goes into the goal. Determine the outcome of the free kick for each of the cases in Table 1.\\
+
+To do this I first calculated the trajectory of the ball which gave me the position from time $t_{start}$ to $t_{final}$. I then used a set of equations to check whether it hit the wall and another set to check if it went in the goal. 
+
+In order to check if it hit the wall, I needed to check for 2 points where the ball passes by the wall. In order to do this I had to use the equations:
+\begin{eqnarray}
+y_{n} > y_{s}^{w} + (x_{n} - x_{s}^{w})\frac{y_{e}^{w} - y_{s}^{w}}{x_{e}^{w} - x_{s}^{w}}\\\nonumber
+y_{n+1} < y_{s}^{w} + (x_{n+1} - x_{s}^{w})\frac{y_{e}^{w} - y_{s}^{w}}{x_{e}^{w} - x_{s}^{w}}\nonumber
+\end{eqnarray}
+where $x_{s}^{w}$ = start of wall x-coordinate, $x_{e}^{w}$ = end of wall x-coordinate, $y_{s}^{w}$ = start of wall y-coordinate, and $y_{e}^{w}$ = end of wall y-coordinate.
+
+For a point $n$, it must satisfy both of these equations in order to tell us that the ball has passed the wall. When we find the correct value of $n$, we can then use this to solve for the x, y, and z coordinates at the moment it passes the wall. These will be called $x^{*}$, $y^{*}$, and $z^{*}$. In order to begin to solve for these we must set the two equations we have for $y^{*}$ equal to each other to find an equation for $x^{*}$.
+\begin{equation}
+y_{n} + (x^{*} - x_{n})\frac{y_{n+1} - y_{n}}{x_{n+1} - x_{n}} = y_{s}^{w} + (x^{*} - x_{s}^{w})\frac{y_{e}^{w} - y_{s}^{w}}{x_{e}^{w} - x_{s}^{w}}
+\end{equation}
+When we solve for $x^{*}$ we get the equation:
+\begin{equation}
+x^{*} = \frac{y_{s}^{w} - y_{n} + x_{n}\frac{y_{n+1} - y{n}}{x_{n+1} - x_{n}} - x_{s}^{w}\frac{y_{e}^{w} - y_{s}^{w}}{x_{e}^{w} - x_{s}^{w}}}{\frac{y_{n+1} - y_{n}}{x_{n+1} - x_{n}} - \frac{y_{e}^{w} - y_{s}^{w}}{x_{e}^{w} - x_{s}^{w}}}
+\end{equation}
+We now solve for $x^{*}$, which allows us to solve for $y^{*}$ and $z^{*}$ using the following equations:
+\begin{eqnarray}
+y^{*} = y_{n} + (x^{*} - x_{n})\frac{y_{n+1} - y_{n}}{x_{n+1} - x_{n}}\\\nonumber
+z^{*} = z_{n} + (x^{*} - x_{n})\frac{z_{n+1} - z_{n}}{x_{n+1} - x_{n}}\nonumber
+\end{eqnarray}
+Now that we have the coordinates at the exact time that the ball passes by the wall, we check if these coordinates are within the bounds of the wall. If they are then the ball has hit the wall and if they aren't then it hasn't.
+
+Next we need to check if the ball goes in the goal. This time rather than check if the ball has passed by the wall, we need to check if the ball is passing the goal line. So we need to find the point $n$ where $y(n) > 0$ and $y(n+1) < 0$. We are checking for a point $n$ where $y(n)$ is just before the goal line and $y(n+1)$ is just after the goal line. Now from here we use an equation to solve for the exact time $t^{*}$. In this case $y^{*}$ (the y-coordinate when passing the goal line) = 0.
+\begin{eqnarray}
+y^{*} = y_{n} + (t^{*} - t_{n})\frac{y_{n+1} - y_{n}}{t_{n+1} - t_{n}}\\\nonumber
+t^{*} = -y_{n}\frac{t_{n+1} - t_{n}}{y_{n+1} - y_{n}} + t_{n}\nonumber
+\end{eqnarray}
+Now that we have the exact time where the ball crosses the goal line, we can solve for the x-coordinate and z-coordinate at this time, $x^{*}$ and $z^{*}$. We will use the following equations:
+\begin{eqnarray}
+x^{*} = x_{n} + (t^{*} - t_{n})\frac{x_{n+1} - x_{n}}{t_{n+1} - t_{n}}\\\nonumber
+x^{*} = z_{n} + (t^{*} - t_{n})\frac{z_{n+1} - z_{n}}{t_{n+1} - t_{n}}\nonumber
+\end{eqnarray}
+We have now found the x and z coordinates for the ball as it passes the goal line. Now all we have to do is check weather these coordinates are within the bounds of the goal and if they are, then we have scored.\\
+
+\begin{table}[htb]
+\centering
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+Case 1 & Missed the wall and went in the goal.                         \\ \hline
+Case 2 & Hit the wall but would have gone in if the wall wasn't there. \\ \hline
+Case 3 & Missed the wall and went in the goal.                         \\ \hline
+Case 4 & Missed the wall and missed the goal.                          \\ \hline
+\end{tabular}
+\caption{Test case outcomes}
+\end{table}
+
+%%%%%%%%%%%
+\newpage
+\clearpage
+\setcounter{page}{1} \pagestyle{empty}
+\section*{References}\label{sec::References}
+\begin{itemize}
+\item [1] Daniil Bochkov, CS 111 - Introduction to Computational Science - Midterm, Fall 2017
+\item [2] Daniil Bochkov, CS 111 - Introduction to Computational Science - Lecture 4 - High-Order Methods, Fall 2017
+\item [3] Daniil Bochkov, CS 111 - Introduction to Computational Science - Lecture 6 - Systems of ODEs,  Fall 2017
+\item [4] Daniil Bochkov, CS 111 - Introduction to Computational Science - Lecture 7 - High-Order ODEs, Fall 2017
+\end{itemize}
+
+
+%%%%%%%%%%%
+
+\end{document}
