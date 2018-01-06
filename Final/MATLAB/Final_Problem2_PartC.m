@@ -8,57 +8,59 @@ xR = 12;
 yB = 0;
 yT = 3;
 
-% diffusion coefficient
+% Diffusion coefficient
 D = 0.2;
 
 % Velocities
 Vx = -.8;
 Vy = -.4;
 
-% boundary conditions
+% Boundary conditions
 c_bc = @(t,x,y) 0;
 g = @(t,x,y) 0;
 
-% initial conditions
+% Initial conditions
 c_start = @(x,y) 0;
 
-% time interval
+% Time
 t_start = 0;
 t_final = 10;
 dt = .1;
 t_all = zeros(1, (t_final - t_start)/dt);
 t_count = 1;
 
-% exact solution
+% Exact solution
 c_exact = @(t,x,y) sin(x)*cos(y)*exp(-t);
 
-% space discretization
+% Space discretization
 Nx = 160;
 Ny = 40;
 
+% Number of discretizations 
 num_splits = 3;
-x0 = 4;
-y0 = 0;
-
-% time-step
 
 subplot_num = 1;
 
+% Create Figure
 figure('rend','painters','pos',[100 100 1400 800])
 
+% Discretize area
 x = linspace(xL, xR, Nx);
 y = linspace(yB, yT, Ny);
 dx = (xR-xL)/(Nx-1);
 dy = (yT-yB)/(Ny-1);
 
+% Preallocate arrays for beach values
 beach_1 = zeros(1, (t_final - t_start)/dt);
 beach_2 = zeros(1, (t_final - t_start)/dt);
 beach_3 = zeros(1, (t_final - t_start)/dt);
 
+% preallocate arrays for concentration values
 c_old = zeros(Ny,Nx);
 c_new = zeros(Ny,Nx);
 c_exa = zeros(Ny,Nx);
 
+% Populate c_old with start values
 for i = 1:Nx
     for j =1:Ny
         c_old(j,i) = c_start(x(i), y(j));
@@ -70,13 +72,13 @@ t = t_start;
 % Create sparse matrix and allocate memory for right-hand side
 RHS = zeros(Nx*Ny,1);
 
-% Calculate the matrix before the while-loop to save time
-% internal points
+% Calculate A matrix before the while-loop to save time
 A = make_A(1,Nx,Ny,dx,dy,dt,D,Vx,Vy);
 
-
+% Iterate through all values of t
 while t < t_final
     
+    % Plot concentrations at certain times
     if (round(t,1) == 1) || (round(t,1) == 4) || (round(t,1) == 7)
         subplot(3,3,subplot_num)
         contourf(x,y,c_old, 100, 'LineColor','none');
@@ -87,13 +89,15 @@ while t < t_final
         subplot_num = subplot_num + 1;
     end
     
+    % Check for overshoot
     if t + dt > t_final
         dt = t_final-t;
         
+        % Recalculate A
         A = make_A(1,Nx,Ny,dx,dy,dt,D,Vx,Vy);
     end
     
-    % internal points
+    % Calculate RHS Array
     for i = 1:Nx
         for j = 1:Ny
             p = (j-1)*Nx+i;
@@ -107,14 +111,15 @@ while t < t_final
         end
     end
     
-    % solve system of equations
+    % Solve system of equations
     c_new = reshape(A\RHS,Nx,Ny)';
     
+    % Store concentration values at beaches
     beach_1(t_count) = c_old(1,54);
     beach_2(t_count) = c_old(1,80);
     beach_3(t_count) = c_old(1,107);
     
-    
+    % Store values and prepare for next iteration
     c_old = c_new;
     t_all(t_count) = t;
     t = t+dt;
@@ -122,11 +127,7 @@ while t < t_final
     
 end
 
-t_all(t_count) = t;
-beach_1(t_count) = c_old(1,54);
-beach_2(t_count) = c_old(1,80);
-beach_3(t_count) = c_old(1,107);
-
+% Plot beach concentrations over time
 subplot(3,3,[4,9]);
 plot(t_all, beach_1, '-', t_all, beach_2, '-', t_all, beach_3, '-')
 title('Concentration vs Time at Beaches');
@@ -134,8 +135,8 @@ xlabel('Time');
 ylabel('Concentration');
 legend('Beach at (4,0)', 'Beach at (6,0)', 'Beach at (8,0)', 'Location', 'southeast');
 
+% Function for source term ??
 function [val] = f(t,x,y)
-
 x_s = 10;
 r_s = .1;
 epsilon = .1;

@@ -1,15 +1,19 @@
 function [A] = make_A(type,Nx,Ny,dx,dy,dt,lambda,Vx,Vy)
 
+% Create sparse matrix for A
 A = sparse(Nx*Ny,Nx*Ny);
 
+% Simple type
 if (type == 0)
     
+    % Calculate values
     a_c = 1 + 2*((lambda*dt)/(dx^2)) + 2*((lambda*dt)/(dy^2));
     a_l = -(lambda*dt)/(dx^2);
     a_r = a_l;
     a_b = -(lambda*dt)/(dy^2);
     a_t = a_b;
     
+    % Populate matrix
     for i = 1:Nx
         for j = 1:Ny
             p = (j-1)*Nx+i;
@@ -25,8 +29,10 @@ if (type == 0)
         end
     end
     
+% Complex type
 elseif (type == 1)
     
+    % Calculate values
     a_c = 1 + 2*((lambda*dt)/(dx^2)) + 2*((lambda*dt)/(dy^2));
     a_l = -(lambda*dt)/(dx^2);
     a_r = a_l;
@@ -38,6 +44,7 @@ elseif (type == 1)
     a_r_r = a_l_r;
     a_t_r = a_t + a_b;
     
+    % Populate matrix
     for i = 1:Nx
         for j = 1:Ny
             p = (j-1)*Nx+i;
@@ -55,11 +62,8 @@ elseif (type == 1)
                 A(p,p-Nx) = a_b;
                 A(p,p+Nx) = a_t;
             end
-            
         end
     end
-    
-    
 end
 end
 

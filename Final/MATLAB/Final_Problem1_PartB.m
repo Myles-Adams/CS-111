@@ -2,51 +2,55 @@ clear;
 clc;
 close all;
 
-% domain
+% Domain
 xL = -1;
 xR = 1;
 yB = -.5;
 yT = 1.7;
 
-% diffusion coefficient
+% Diffusion coefficient
 lambda = 0.75;
 
-% boundary conditions
+% Boundary conditions
 T_bc = @(t,x,y) sin(x)*cos(y)*exp(-t);
 
-% source term
+% Source term
 f = @(t,x, y) (2*lambda - 1)*sin(x)*cos(y)*exp(-t);
 
 % initial conditions
 T_start = @(x,y) sin(x)*cos(y);
 
-% time interval
+% Time interval
 t_start = 0;
 t_final = 1;
 
-% exact solution
+% Exact solution
 T_exact = @(t,x,y) sin(x)*cos(y)*exp(-t);
 
-% space discretization
+% Space discretization
 Nx = 25;
 Ny = 30;
 
 num_splits = 3;
 
+% Run problem for each discretization
 for k = 1:num_splits
     
+    % Discretize the potato
     x = linspace(xL, xR, Nx);
     y = linspace(yB, yT, Ny);
     dx = (xR-xL)/(Nx-1);
     dy = (yT-yB)/(Ny-1);
     
-    % time-step
+    % Time-step
     dt = .5*dx;
-        
+    
+    % Allocate arrays
     T_old = zeros(Ny,Nx);
     T_new = zeros(Ny,Nx);
     T_exa = zeros(Ny,Nx);
     
+    % Populate T_old with start values
     for i = 1:Nx
         for j =1:Ny
             T_old(j,i) = T_start(x(i), y(j));
@@ -58,19 +62,21 @@ for k = 1:num_splits
     % Create sparse matrix and allocate memory for right-hand side
     RHS = zeros(Nx*Ny,1);
     
-    % Calculate the matrix before the while-loop to save time
-    % internal points
+    % Calculate A matrix before the while-loop to save time
     A = make_A(0,Nx,Ny,dx,dy,dt,lambda);
     
+    % Loop through all values of t
     while t < t_final
         
+        % Check for overshoot
         if t + dt > t_final
             dt = t_final-t;
             
+            % Recalculate A
             A = make_A(0,Nx,Ny,dx,dy,dt,lambda);
         end
         
-        % Make RHS
+        % Calculate RHS array
         for i = 1:Nx
             for j = 1:Ny
                 p = (j-1)*Nx+i;
@@ -85,24 +91,29 @@ for k = 1:num_splits
         % solve system of equations
         T_new = reshape(A\RHS,Nx,Ny)';
         
+        % Prepare for next iteration
         T_old = T_new;
         
-        for i = 1:Nx
-            for j = 1:Ny
-                T_exa(j,i) = T_exact(t+dt,x(i),y(j));
-            end
-        end
-        
-        
-        
+        % Incremenet t
         t = t+dt;
         
     end
     
+    % Calculate t_exact
+    for i = 1:Nx
+        for j = 1:Ny
+            T_exa(j,i) = T_exact(t,x(i),y(j));
+        end
+    end
+    
+    % Solve error and store
     error(k) = max(max(abs(T_exa - T_new)));
+
+    % Store discretization sizes
     Nx_all(k) = Nx;
     Ny_all(k) = Ny;
     
+    % Change discretization sizes
     Nx = Nx*2;
     Ny = Ny*2;
 end
