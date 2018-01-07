@@ -131,9 +131,15 @@ end
 subplot(3,3,[4,9]);
 plot(t_all, beach_1, '-', t_all, beach_2, '-', t_all, beach_3, '-')
 title('Concentration vs Time at Beaches');
-xlabel('Time');
+text(1.3,.006273,'\leftarrow Reaches .006273', 'fontsize', 14)
+text(1.52,.0055,'at t = 1.3', 'fontsize', 14)
+text(3.3,.006549,'\leftarrow Reaches .006549', 'fontsize', 14)
+text(3.52,.0058,'at t = 3.3', 'fontsize', 14)
+text(5.2,.00597,'\leftarrow Reaches .00597', 'fontsize', 14)
+text(5.42,.0052,'at t = 5.2', 'fontsize', 14)
+xlabel('Time (h)');
 ylabel('Concentration');
-legend('Beach at (4,0)', 'Beach at (6,0)', 'Beach at (8,0)', 'Location', 'southeast');
+legend('Beach at (4,0)', 'Beach at (6,0)', 'Beach at (8,0)', 'Location', 'northeast');
 
 % Function for source term ??
 function [val] = f(t,x,y)
