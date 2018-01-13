@@ -137,7 +137,7 @@ text(3.3,.006549,'\leftarrow Reaches .006549', 'fontsize', 14)
 text(3.52,.0058,'at t = 3.3', 'fontsize', 14)
 text(5.2,.00597,'\leftarrow Reaches .00597', 'fontsize', 14)
 text(5.42,.0052,'at t = 5.2', 'fontsize', 14)
-xlabel('Time (h)');
+xlabel('Time (days)');
 ylabel('Concentration');
 legend('Beach at (4,0)', 'Beach at (6,0)', 'Beach at (8,0)', 'Location', 'northeast');
 
